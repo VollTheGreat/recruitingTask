@@ -36,14 +36,14 @@ services:
     ports:
       - 3306:3306
 
-  test:
-    build:
-      context: ./components/app
-      dockerfile: develop/tests.Dockerfile
-      args:
-        - XDEBUG_PORT=${XDEBUG_PORT:-172.18.0.1}
-    volumes:
-      - ./components/app/src:/var/www
+#  test:
+#    build:
+#      context: ./components/app
+#      dockerfile: develop/tests.Dockerfile
+#      args:
+#        - XDEBUG_PORT=${XDEBUG_PORT:-172.18.0.1}
+#    volumes:
+#      - ./components/app/src:/var/www
 
 #  queue-worker:
 #    env_file: ./config/local/app.env
