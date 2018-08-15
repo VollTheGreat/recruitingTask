@@ -4,6 +4,7 @@ services:
 - docker
 
 script:
+- sudo service mysql stop
 - docker-compose up -d
 - docker-compose exec app sh
 - php vendor/bin/phpunit
