@@ -7,6 +7,8 @@ if [[ -f composer.json ]]; then
 fi
 cp .env.example .env
 
+php artisan key:generate
+
 echo "Removing config cache"
 php artisan config:cache
 
