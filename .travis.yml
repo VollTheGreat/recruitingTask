@@ -1,11 +1,11 @@
-language: php
+language: generic
 
 services:
 - docker
 
 before_script:
 - sudo service mysql stop
-- docker-compose up --build -d
+- docker-compose up -d
 - docker ps -a
 # Install dependencies in the app container
 - docker-compose exec -T app composer self-update
