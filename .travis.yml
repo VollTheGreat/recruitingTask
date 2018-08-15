@@ -19,7 +19,7 @@ before_script:
 script:
 # Run unit tests in the app container
 #- docker-compose exec -T app vendor/bin/php-cs-fixer fix app --verbose
-- docker-compose exec -T app vendor/bin/phpunit --coverage-clover=coverage.xml
+- docker-compose exec -T app vendor/bin/phpunit
 
 after_script:
 - docker-compose down
