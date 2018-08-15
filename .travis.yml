@@ -13,7 +13,6 @@ before_script:
 - docker-compose exec -T app composer dump-autoload -o
 - docker-compose exec -T app php artisan config:cache
 - docker-compose exec -T app php artisan key:generate
-- docker-compose exec -T app php artisan optimize
 - docker-compose exec -T app chmod -R 777 /var/www/bootstrap/cache /var/www/storage
 
 script:
