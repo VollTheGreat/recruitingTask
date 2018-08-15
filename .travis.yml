@@ -1,12 +1,10 @@
 language: php
 
-sudo: required
-
 services:
 - docker
 
 before_script:
-- service mysql stop
+- sudo service mysql stop
 - docker-compose up --build -d
 - docker ps -a
 # Install dependencies in the app container
