@@ -25,7 +25,8 @@ RUN set -ex \
     && pecl install imagick rar xdebug \
     && docker-php-ext-enable imagick rar xdebug \
     && printf "xdebug.remote_host=${XDEBUG_PORT}\n" | tee -a /usr/local/etc/php/conf.d/xdebug.ini \
-    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer \
-    && composer global require hirak/prestissimo
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
+#    \
+#    && composer global require hirak/prestissimo
 
 CMD entrypoint.sh
