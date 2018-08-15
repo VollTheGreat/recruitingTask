@@ -9,4 +9,4 @@ script:
 - sudo service mysql stop
 - docker-compose build
 - docker-compose up -d
-- docker-compose exec app vendor/bin/phpunit
+- docker-compose exec app /var/www/vendor/bin/phpunit
