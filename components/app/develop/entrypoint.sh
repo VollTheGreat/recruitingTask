@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 set -e
-
+echo "Starting entrypoint.sh"
 if [[ -f composer.json ]]; then
     echo "Installing dependencies"
     composer install

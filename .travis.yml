@@ -5,8 +5,11 @@ sudo: required
 services:
 - docker
 
+before_script:
+- docker-compose up --build -d
+
 script:
-- sudo service mysql stop
-- docker-compose build
-- docker-compose up -d
-- docker-compose exec app /var/www/vendor/bin/phpunit
+- components/app/vendor/bin/phpunit --bootstrap components/app/vendor/autoload.php tests
+
+after_script:
+- docker-compose down
