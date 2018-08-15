@@ -1,16 +1,14 @@
-language: generic
+language: php
 
 sudo: required
 
 services:
 - docker
 
-before_install:
-  - service mysql stop
-  - docker-compose up --build -d
-  - docker ps -a
-
 before_script:
+- service mysql stop
+- docker-compose up --build -d
+- docker ps -a
 # Install dependencies in the app container
 - docker-compose exec -T app composer self-update
 - docker-compose exec -T app composer install --no-interaction
