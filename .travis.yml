@@ -8,7 +8,6 @@ before_script:
 - docker-compose up -d
 - docker ps -a
 # Install dependencies in the app container
-- docker-compose exec -T app composer self-update
 - docker-compose exec -T app composer install
 - docker-compose exec -T app composer dump-autoload -o
 - docker-compose exec -T app php artisan key:generate
