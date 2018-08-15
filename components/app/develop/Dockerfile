@@ -29,4 +29,4 @@ RUN set -ex \
 #    \
 #    && composer global require hirak/prestissimo
 
-CMD entrypoint.sh
+#CMD entrypoint.sh

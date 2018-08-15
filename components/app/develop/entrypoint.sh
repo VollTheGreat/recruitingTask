@@ -15,5 +15,5 @@ php artisan config:cache
 echo "Chmoding cache and storage folders"
 chmod -R 777 /var/www/bootstrap/cache /var/www/storage
 
-echo "Running PHP FPM"
-php-fpm -D | tail -f $LOG_STREAM
+#echo "Running PHP FPM"
+#php-fpm -D | tail -f $LOG_STREAM
