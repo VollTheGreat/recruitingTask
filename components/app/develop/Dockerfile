@@ -28,4 +28,4 @@ RUN set -ex \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer \
     && composer global require hirak/prestissimo
 
-CMD entrypoint.sh
+#CMD entrypoint.sh
