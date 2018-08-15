@@ -6,8 +6,8 @@ volumes:
 services:
   app:
     build:
-      context: ./components/app
-      dockerfile: develop/Dockerfile
+      context: ./
+      dockerfile: ./components/app/develop/Dockerfile
       args:
         - XDEBUG_PORT=${XDEBUG_PORT:-172.18.0.1}
 #   env_file: ./config/local/app.env
