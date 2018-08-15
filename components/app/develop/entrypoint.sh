@@ -5,6 +5,7 @@ if [[ -f composer.json ]]; then
     echo "Installing dependencies"
     composer install
 fi
+cp .env.example .env
 
 echo "Removing config cache"
 php artisan config:cache

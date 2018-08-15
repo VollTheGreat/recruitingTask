@@ -6,10 +6,9 @@ ENV LOG_STREAM="/tmp/stdout"
 
 WORKDIR /var/www
 
-COPY components/app/develop/php.ini /usr/local/etc/php/
-COPY components/app/develop/xdebug.ini /usr/local/etc/php/conf.d/
-COPY components/app/develop/entrypoint.sh /usr/local/bin/
-COPY config/local/app.env /var/www/.emv
+COPY ./develop/php.ini /usr/local/etc/php/
+COPY ./develop/xdebug.ini /usr/local/etc/php/conf.d/
+COPY ./develop/entrypoint.sh /usr/local/bin/
 
 RUN set -ex \
     && mkfifo ${LOG_STREAM} \
