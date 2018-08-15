@@ -6,6 +6,7 @@ services:
 - docker
 
 before_install:
+  - service mysql stop
   - docker-compose up --build -d
   - docker ps -a
 
