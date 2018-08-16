@@ -11,7 +11,7 @@ services:
       args:
       - XDEBUG_PORT=${XDEBUG_PORT:-172.18.0.1}
     volumes:
-    - ./components/app/src:/var/www
+    - ./components/app/src:/var/www:cached
 #    depends_on:
 #    - db
 
