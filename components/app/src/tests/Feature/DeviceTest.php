@@ -61,7 +61,6 @@ class DeviceTest extends TestCase
     /** @test */
     public function new_device_report_email_was_send()
     {
-        $this->withoutExceptionHandling();
         //Prepare
         $userJson = [
             'user_id' => factory(User::class)->create()->id,
@@ -129,7 +128,6 @@ class DeviceTest extends TestCase
     /** @test */
     public function user_can_approve_device()
     {
-        $this->withoutExceptionHandling();
         //Prepare
         $device = factory(Device::class)->create();
         //Act
@@ -147,7 +145,6 @@ class DeviceTest extends TestCase
     /** @test */
     public function user_can_note_approve_already_approved_device()
     {
-        $this->withoutExceptionHandling();
         //Prepare
         $device = factory(Device::class)->create();
         //Act
@@ -165,7 +162,6 @@ class DeviceTest extends TestCase
     /** @test */
     public function user_can_see_approved_devices()
     {
-        $this->withoutExceptionHandling();
         //Prepare
         $device = factory(Device::class)->create();
         //Act
@@ -181,7 +177,6 @@ class DeviceTest extends TestCase
     /** @test */
     public function user_can_delete_device()
     {
-        $this->withoutExceptionHandling();
         //Prepare
         $device = factory(Device::class)->create();
         //Act
@@ -201,7 +196,6 @@ class DeviceTest extends TestCase
     /** @test */
     public function user_can_note_delete_approved_device()
     {
-        $this->withoutExceptionHandling();
         //Prepare
         $device = factory(Device::class)->create();
         //Act
