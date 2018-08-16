@@ -11,19 +11,19 @@ class DeviceRepository implements DeviceRepositoryInterface
     /**
      * Get All Unconfirmed Devices
      *
-     * @return \Illuminate\Database\Eloquent\Collection|Null
+     * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getUnconfirmed(): ?Collection
+    public function getUnconfirmed(): Collection
     {
         return Device::whereNull('accepted_at')->get();
     }
 
     /**
-     *  Get All Confirmed Devices
+     * Get All Confirmed Devices
      *
-     * @return \Illuminate\Database\Eloquent\Collection|Null
+     * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getConfirmed(): ?Collection
+    public function getConfirmed(): Collection
     {
         return Device::whereNotNull('accepted_at')->get();
     }
@@ -42,8 +42,8 @@ class DeviceRepository implements DeviceRepositoryInterface
         try{
             $device = new Device();
             $device->fill($allPostData);
-            $device->type()->update($allPostData['type']);
             $device->save();
+            $device->type()->update($allPostData['type']);
             DB::commit();
         }catch (\Throwable $exception){
             DB::rollBack();

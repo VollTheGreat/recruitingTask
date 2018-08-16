@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Domain\Device\Controllers;
+namespace  App\Http\Controllers;
 
 use App\Domain\Device\Exceptions\DeviceCreationFailed;
 use App\Domain\Device\Repositories\DeviceRepository;
 use App\Domain\Device\Repositories\TypeRepository;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class DeviceController extends Controller
 {
@@ -39,47 +38,36 @@ class DeviceController extends Controller
      *
      * Display list of confirmed devices
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index(): View
+    public function index(): JsonResponse
     {
-        return view('device.index', [
+        return response()->json([
             'devices' => $this->deviceRepository->getConfirmed(),
-        ]);
+        ], 200);
     }
 
     /**
-     * GET /device/create
-     *
-     * Display list of confirmed devices
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function create(): View
-    {
-        return view('device.create', [
-            'types' => $this->typeRepository->getAll(),
-        ]);
-    }
-
-    /**
-     * PUT /device
      * PUT /api/device
      *
      * @param \App\Domain\Device\Controllers\DeviceStoreRequest $deviceStoreRequest
      *
-     * @return string
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(DeviceStoreRequest $deviceStoreRequest)
+    public function store(DeviceStoreRequest $deviceStoreRequest): JsonResponse
     {
-        try{
+        try {
             $this->deviceRepository->create($deviceStoreRequest->all());
-        }catch (DeviceCreationFailed $exception){
+        } catch (DeviceCreationFailed $exception) {
             return response()->json([
-                'message' => 'error occurred while saving new device'
-            ],500);
+                'status' => 'error',
+                'message' => 'Error occurred while saving new device',
+            ], 500);
         }
 
-        return response()->json();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'device created successfully',
+        ]);
     }
 }
