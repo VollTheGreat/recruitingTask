@@ -18,11 +18,12 @@
 [![Build Status](https://travis-ci.org/VollTheGreat/recruitingTask.svg?branch=master)](https://travis-ci.org/VollTheGreat/recruitingTask)
 ## Fire up project
 To start a project you need docker and docker-compose installed.
-***optional*** if LAMP is running 
+
+* ***optional*** if LAMP is running 
 ```
 - sudo service mysql stop
 ```
-start project
+* start project
 ```
 - docker-compose up -d
 ```
