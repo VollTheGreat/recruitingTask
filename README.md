@@ -1,8 +1,13 @@
 [![Build Status](https://travis-ci.org/VollTheGreat/recruitingTask.svg?branch=master)](https://travis-ci.org/VollTheGreat/recruitingTask)
 # Recruiting Task
 ## Description
- Test task was done with docker, laravel framework v. 5.6, and PHPUnit 7.3.1. and is Connected with TravisCI
-    Application is an API service with functionality that was required in test task.
+ Test task was done with:
+ * Docker, 
+ * Laravel Framework v.5.6
+ * PHPUnit 7.3.1 
+ * is Connected with TravisCI.
+ 
+ Application is an API service with functionality that was required in test task.
 
 ## Main file structure guideline
 * [Application main files](https://github.com/VollTheGreat/recruitingTask/blob/master/components/app/src): components/app/src
