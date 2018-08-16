@@ -7,12 +7,13 @@ before_script:
 - sudo service mysql stop
 - docker-compose -f docker-compose.travis.yml build --no-cache
 - docker-compose -f docker-compose.travis.yml up -d
+- docker-compose down
+- docker-compose -f docker-compose.travis.yml up -d
 - docker ps -a
 # Install dependencies in the app container
 # - sudo docker-compose exec -T app entrypoint.sh
 #- docker-compose exec -T app composer install
 #- docker-compose exec -T app composer dump-autoload -o
-#- docker-compose exec -T app php artisan key:generate
 #- docker-compose exec -T app php artisan key:generate
 #- docker-compose exec -T app php artisan config:cache
 #- docker-compose exec -T app chmod -R 777 /var/www/bootstrap/cache /var/www/storage
@@ -21,6 +22,3 @@ script:
 # Run unit tests in the app container
 #- docker-compose exec -T app vendor/bin/php-cs-fixer fix app --verbose
 - docker-compose exec -T app vendor/bin/phpunit
-
-after_script:
-- docker-compose down
