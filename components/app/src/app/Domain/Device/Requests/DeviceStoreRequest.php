@@ -30,6 +30,7 @@ class DeviceStoreRequest extends FormRequest
             'brand'=> 'required|max:255',
             'system' => 'required|max:255',
             'version' => 'required|max:255',
+            'report_email' => 'required|email'
         ];
     }
 }

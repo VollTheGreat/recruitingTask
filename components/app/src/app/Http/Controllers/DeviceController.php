@@ -58,11 +58,9 @@ class DeviceController extends Controller
     public function store(DeviceStoreRequest $deviceStoreRequest): JsonResponse
     {
         try {
-            $this->deviceRepository->create($deviceStoreRequest->all());
+            $device = $this->deviceRepository->create($deviceStoreRequest->all());
+            $this->deviceRepository->reportNewDevice($device,$deviceStoreRequest->get('report_email'));
         } catch (DeviceCreationFailed $exception) {
-            if(env('APP_ENV') == 'testing'){
-                dd($exception);
-            }
             return response()->json([
                 'status' => 'error',
                 'message' => 'Error occurred while saving new device',
@@ -73,5 +71,17 @@ class DeviceController extends Controller
             'status' => 'success',
             'message' => 'device created successfully',
         ],200);
+    }
+
+    /**
+     * PUT /api/device/:id/approve
+     *
+     * Approve Device for displaying in list
+     *
+     * @param $id
+     */
+    public function approve($id)
+    {
+
     }
 }
