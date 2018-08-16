@@ -12,6 +12,7 @@ class DeviceTest extends TestCase
 {
     use RefreshDatabase;
 
+    //TODO:: Unit Tests
     /** @test */
     public function user_can_not_see_unconfirmed_devices_on_list()
     {
@@ -42,7 +43,7 @@ class DeviceTest extends TestCase
             'report_email' => 'spavljuk@gmail.com',
         ];
         //Act
-        $response = $this->json('put', 'device.store', $userJson);
+        $response = $this->json('put', route('device.store'), $userJson);
         $devices = Device::where([
             'model' => 'testModel',
             'brand' => 'testBrand',
@@ -51,7 +52,10 @@ class DeviceTest extends TestCase
         ])->get();
         //Assertions
         $this->assertCount(1, $devices);
-        $response->assertStatus(200);
+        $response->assertStatus(200)->assertJson([
+            'status' => 'success',
+            'message' => 'device created successfully',
+        ]);;
     }
 
     /** @test */
@@ -69,7 +73,7 @@ class DeviceTest extends TestCase
             'report_email' => 'spavljuk@gmail.com',
         ];
         //Act
-        $response = $this->json('put', 'device.store', $userJson);
+        $response = $this->json('put', route('device.store'), $userJson);
         //Assertions
         $response->assertStatus(200);
         $device = Device::where([
