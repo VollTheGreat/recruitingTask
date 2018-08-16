@@ -157,7 +157,7 @@ class DeviceTest extends TestCase
         $response
             ->assertStatus(500)
             ->assertJson([
-                'status' => 'Error',
+                'status' => 'error',
                 'message' => 'Error occurred while Approving new device',
             ]);
     }
@@ -211,7 +211,7 @@ class DeviceTest extends TestCase
         $response
             ->assertStatus(500)
             ->assertJson([
-                'status' => 'Error',
+                'status' => 'error',
                 'message' => 'Can not delete already approved device',
             ]);
         $this->json('get', route('device.index'))

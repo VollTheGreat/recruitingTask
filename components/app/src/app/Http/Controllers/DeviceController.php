@@ -6,35 +6,28 @@ use App\Domain\Device\Exceptions\DeviceApprovingFailedException;
 use App\Domain\Device\Exceptions\DeviceCanNoteBeDeleted;
 use App\Domain\Device\Exceptions\DeviceCreationFailed;
 use App\Domain\Device\Repositories\DeviceRepository;
-use App\Domain\Device\Repositories\TypeRepository;
 use App\Domain\Device\Requests\DeviceStoreRequest;
 use Illuminate\Http\JsonResponse;
 
 class DeviceController extends Controller
 {
+    const STATUS_ERROR = 'error';
+    const STATUS_SUCCESS = 'success';
+
     /**
      * @var \App\Domain\Device\Repositories\DeviceRepository
      */
     private $deviceRepository;
-    /**
-     * @var \App\Domain\Device\Repositories\TypeRepository
-     */
-    private $typeRepository;
+
     /**
      * DeviceController constructor.
      *
      * @param \App\Domain\Device\Repositories\DeviceRepository $deviceRepository
-     * @param \App\Domain\Device\Repositories\TypeRepository $typeRepository
      */
-    const STATUS_ERROR = 'Error';
-    const STATUS_SUCCESS = 'success';
-
     public function __construct(
-        DeviceRepository $deviceRepository,
-        TypeRepository $typeRepository
+        DeviceRepository $deviceRepository
     ) {
         $this->deviceRepository = $deviceRepository;
-        $this->typeRepository = $typeRepository;
     }
 
     /**
