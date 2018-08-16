@@ -17,7 +17,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('device', 'DeviceController@index')->name('device.index');
-Route::put('device', 'DeviceController@store')->name('device.store');
-Route::put('device/{id}/approve', 'DeviceController@approve')->name('device.approve');
-Route::delete('device/{id}', 'DeviceController@delete')->name('device.delete');
+Route::prefix('device')->group(function () {
+    Route::get('/', 'DeviceController@index')->name('device.index');
+    Route::put('/', 'DeviceController@store')->name('device.store');
+    Route::put('{id}/approve', 'DeviceController@approve')->name('device.approve');
+    Route::delete('{id}', 'DeviceController@delete')->name('device.delete');
+});
+
