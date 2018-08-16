@@ -30,3 +30,6 @@ RUN set -ex \
 #    && composer global require hirak/prestissimo
 
 CMD entrypoint.sh
+
+RUN set -ex \
+    && composer global require hirak/prestissimo \

@@ -5,8 +5,8 @@ services:
 
 before_script:
 - sudo service mysql stop
-- docker-compose build --no-cache
-- docker-compose up -d
+- docker-compose -f docker-compose.travis.yml build --no-cache
+- docker-compose -f docker-compose.travis.yml up -d
 - docker ps -a
 # Install dependencies in the app container
 # - sudo docker-compose exec -T app entrypoint.sh
