@@ -2,6 +2,7 @@
 
 use App\Domain\Device\Models\Type;
 use App\User;
+use Carbon\Carbon;
 use Faker\Generator as Faker;
 
 /*
@@ -26,9 +27,8 @@ $factory->define(App\Domain\Device\Models\Device::class, function (Faker $faker)
         'brand' => $faker->name,
         'system' => $faker->name,
         'version' => $faker->bankAccountNumber,
-        'mailed_to' => null,
-        'mailed_at' => \Carbon\Carbon::now(),
+        'mailed_to' => $faker->email,
+        'mailed_at' => Carbon::now(),
         'accepted_at'=>null,
-        'accepted_by' => null,
     ];
 });

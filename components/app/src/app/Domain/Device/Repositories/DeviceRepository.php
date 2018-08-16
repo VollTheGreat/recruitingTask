@@ -2,6 +2,8 @@
 
 namespace App\Domain\Device\Repositories;
 
+use App\Domain\Device\Exceptions\DeviceApprovingFailedException;
+use App\Domain\Device\Exceptions\DeviceCanNoteBeDeleted;
 use App\Domain\Device\Exceptions\DeviceCreationFailed;
 use App\Domain\Device\Exceptions\NewDeviceMailSendFailedException;
 use App\Domain\Device\Models\Device;
@@ -78,9 +80,54 @@ class DeviceRepository implements DeviceRepositoryInterface
                 'mailed_to' => $reportEmail,
             ]);
         } catch (\Exception $exception) {
-            throw new NewDeviceMailSendFailedException($exception->getMessage(),$exception->getCode());
+            throw new NewDeviceMailSendFailedException($exception->getMessage(), $exception->getCode());
         }
 
         return $device;
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return \App\Domain\Device\Models\Device
+     * @throws \App\Domain\Device\Exceptions\DeviceApprovingFailedException
+     */
+    public function approve(int $id)
+    {
+        try {
+            $device = Device::find($id);
+            if ($device->accepted_at) {
+                throw new DeviceApprovingFailedException('Can not approve already approved device');
+            }
+            $device->approve();
+        } catch (\RuntimeException $exception) {
+            throw new DeviceApprovingFailedException($exception->getMessage(), $exception->getCode());
+        }
+
+        return $device;
+    }
+
+    /**
+     * Delete Device
+     *
+     * @param int $id
+     *
+     * @return bool
+     * @throws \App\Domain\Device\Exceptions\DeviceApprovingFailedException
+     * @throws \App\Domain\Device\Exceptions\DeviceCanNoteBeDeleted
+     */
+    public function delete(int $id)
+    {
+        try {
+            $device = Device::find($id);
+            if ($device->accepted_at) {
+                throw new DeviceCanNoteBeDeleted('Can not delete already approved device');
+            }
+            $device->delete();
+        } catch (\RuntimeException $exception) {
+            throw new DeviceApprovingFailedException($exception->getMessage(), $exception->getCode());
+        }
+
+        return true;
     }
 }

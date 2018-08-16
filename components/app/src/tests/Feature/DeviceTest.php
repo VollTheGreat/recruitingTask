@@ -5,8 +5,8 @@ namespace Tests\Feature;
 use App\Domain\Device\Models\Device;
 use App\Domain\Device\Models\Type;
 use App\User;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class DeviceTest extends TestCase
 {
@@ -18,13 +18,14 @@ class DeviceTest extends TestCase
         //Prepare
         factory(Device::class)->create();
         //Act
-        $response = $this->json('get', '/api/device');
+        $response = $this->json('get', route('device.index'));
         //Assertions
         $response
             ->assertStatus(200)
             ->assertJson([
                 'devices' => [],
-            ]);
+            ])
+            ->assertJsonCount(0, 'devices');;
     }
 
     /** @test */
@@ -41,7 +42,7 @@ class DeviceTest extends TestCase
             'report_email' => 'spavljuk@gmail.com',
         ];
         //Act
-        $response = $this->json('put', '/api/device', $userJson);
+        $response = $this->json('put', 'device.store', $userJson);
         $devices = Device::where([
             'model' => 'testModel',
             'brand' => 'testBrand',
@@ -68,7 +69,7 @@ class DeviceTest extends TestCase
             'report_email' => 'spavljuk@gmail.com',
         ];
         //Act
-        $response = $this->json('put', '/api/device', $userJson);
+        $response = $this->json('put', 'device.store', $userJson);
         //Assertions
         $response->assertStatus(200);
         $device = Device::where([
@@ -96,7 +97,7 @@ class DeviceTest extends TestCase
 
         ];
         //Act
-        $response = $this->json('put', '/api/device', $userJson);
+        $response = $this->json('put', route('device.store'), $userJson);
         //Assertions
         $response->assertStatus(422);
         $this->assertArrayHasKey('report_email', $response->decodeResponseJson('errors'));
@@ -115,9 +116,102 @@ class DeviceTest extends TestCase
             'report_email' => 'report_email@test.com',
         ];
         //Act
-        $response = $this->json('put', '/api/device', $userJson);
+        $response = $this->json('put', route('device.store'), $userJson);
         //Assertions
         $response->assertStatus(422);
         $this->assertArrayHasKey('type_id', $response->decodeResponseJson('errors'));
+    }
+
+    /** @test */
+    public function user_can_approve_device()
+    {
+        $this->withoutExceptionHandling();
+        //Prepare
+        $device = factory(Device::class)->create();
+        //Act
+        $response = $this->put(route('device.approve', ['id' => $device->id]));
+        //Assertions
+
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                'status' => 'success',
+                'message' => 'Device Approved successfully',
+            ]);
+    }
+
+    /** @test */
+    public function user_can_note_approve_already_approved_device()
+    {
+        $this->withoutExceptionHandling();
+        //Prepare
+        $device = factory(Device::class)->create();
+        //Act
+        $this->put(route('device.approve', ['id' => $device->id]));
+        $response = $this->put(route('device.approve', ['id' => $device->id]));
+        //Assertions
+        $response
+            ->assertStatus(500)
+            ->assertJson([
+                'status' => 'Error',
+                'message' => 'Error occurred while Approving new device',
+            ]);
+    }
+
+    /** @test */
+    public function user_can_see_approved_devices()
+    {
+        $this->withoutExceptionHandling();
+        //Prepare
+        $device = factory(Device::class)->create();
+        //Act
+        $this->put(route('device.approve', ['id' => $device->id]));
+        //Act
+        $response = $this->json('get', route('device.index'));
+        //Assertions
+        $response
+            ->assertStatus(200)
+            ->assertJsonCount(1, 'devices');
+    }
+
+    /** @test */
+    public function user_can_delete_device()
+    {
+        $this->withoutExceptionHandling();
+        //Prepare
+        $device = factory(Device::class)->create();
+        //Act
+        $response = $this->delete(route('device.delete', ['id' => $device->id]));
+        //Assertions
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                'status' => 'success',
+                'message' => 'Device deleted successfully',
+            ]);
+        $this->json('get', route('device.index'))
+            ->assertStatus(200)
+            ->assertJsonCount(0, 'devices');
+    }
+
+    /** @test */
+    public function user_can_note_delete_approved_device()
+    {
+        $this->withoutExceptionHandling();
+        //Prepare
+        $device = factory(Device::class)->create();
+        //Act
+        $this->put(route('device.approve', ['id' => $device->id]));
+        $response = $this->delete(route('device.delete', ['id' => $device->id]));
+        //Assertions
+        $response
+            ->assertStatus(500)
+            ->assertJson([
+                'status' => 'Error',
+                'message' => 'Can not delete already approved device',
+            ]);
+        $this->json('get', route('device.index'))
+            ->assertStatus(200)
+            ->assertJsonCount(1, 'devices');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Domain\Device\Models;
 
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Device extends Model
@@ -17,7 +18,6 @@ class Device extends Model
         'mailed_to',
         'mailed_at',
         'accepted_at',
-        'accepted_by',
     ];
 
     protected $dates = [
@@ -41,5 +41,15 @@ class Device extends Model
      */
     public function user(){
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Approve a device
+     */
+    public function approve()
+    {
+        return $this->update([
+            'accepted_at' => Carbon::now(),
+        ]);
     }
 }

@@ -1,13 +1,14 @@
 <?php
 
-namespace  App\Http\Controllers;
+namespace App\Http\Controllers;
 
+use App\Domain\Device\Exceptions\DeviceApprovingFailedException;
+use App\Domain\Device\Exceptions\DeviceCanNoteBeDeleted;
 use App\Domain\Device\Exceptions\DeviceCreationFailed;
 use App\Domain\Device\Repositories\DeviceRepository;
 use App\Domain\Device\Repositories\TypeRepository;
 use App\Domain\Device\Requests\DeviceStoreRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class DeviceController extends Controller
 {
@@ -19,13 +20,15 @@ class DeviceController extends Controller
      * @var \App\Domain\Device\Repositories\TypeRepository
      */
     private $typeRepository;
-
     /**
      * DeviceController constructor.
      *
      * @param \App\Domain\Device\Repositories\DeviceRepository $deviceRepository
      * @param \App\Domain\Device\Repositories\TypeRepository $typeRepository
      */
+    const STATUS_ERROR = 'Error';
+    const STATUS_SUCCESS = 'success';
+
     public function __construct(
         DeviceRepository $deviceRepository,
         TypeRepository $typeRepository
@@ -54,12 +57,13 @@ class DeviceController extends Controller
      * @param \App\Domain\Device\Requests\DeviceStoreRequest $deviceStoreRequest
      *
      * @return \Illuminate\Http\JsonResponse
+     * @throws \App\Domain\Device\Exceptions\NewDeviceMailSendFailedException
      */
     public function store(DeviceStoreRequest $deviceStoreRequest): JsonResponse
     {
         try {
             $device = $this->deviceRepository->create($deviceStoreRequest->all());
-            $this->deviceRepository->reportNewDevice($device,$deviceStoreRequest->get('report_email'));
+            $this->deviceRepository->reportNewDevice($device, $deviceStoreRequest->get('report_email'));
         } catch (DeviceCreationFailed $exception) {
             return response()->json([
                 'status' => 'error',
@@ -68,9 +72,9 @@ class DeviceController extends Controller
         }
 
         return response()->json([
-            'status' => 'success',
+            'status' => self::STATUS_SUCCESS,
             'message' => 'device created successfully',
-        ],200);
+        ], 200);
     }
 
     /**
@@ -78,10 +82,49 @@ class DeviceController extends Controller
      *
      * Approve Device for displaying in list
      *
-     * @param $id
+     * @param int $id
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function approve($id)
+    public function approve(int $id)
     {
+        try {
+            $this->deviceRepository->approve($id);
+        } catch (DeviceApprovingFailedException $exception) {
+            return response()->json([
+                'status' => self::STATUS_ERROR,
+                'message' => 'Error occurred while Approving new device',
+            ], 500);
+        }
 
+        return response()->json([
+            'status' => self::STATUS_SUCCESS,
+            'message' => 'Device Approved successfully',
+        ], 200);
+    }
+
+    /**
+     * DELETE /api/device/id
+     *
+     * @param int $id
+     *
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \App\Domain\Device\Exceptions\DeviceApprovingFailedException
+     */
+    public function delete(int $id)
+    {
+        try {
+            $this->deviceRepository->delete($id);
+        } catch (DeviceCanNoteBeDeleted $exception) {
+            return response()->json([
+                'status' => self::STATUS_ERROR,
+                'message' => $exception->getMessage(),
+            ], 500);
+        }
+
+        return response()->json([
+            'status' => self::STATUS_SUCCESS,
+            'message' => 'Device deleted successfully',
+        ], 200);
     }
 }

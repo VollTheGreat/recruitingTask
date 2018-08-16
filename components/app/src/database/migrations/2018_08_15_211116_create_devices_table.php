@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateDevicesTable extends Migration
 {
@@ -24,7 +24,6 @@ class CreateDevicesTable extends Migration
             $table->string('mailed_to')->nullable();
             $table->dateTime('mailed_at')->nullable();
             $table->dateTime('accepted_at')->nullable();
-            $table->unsignedInteger('accepted_by')->nullable();
             $table->timestamps();
         });
     }
