@@ -2,10 +2,10 @@
 # Recruiting Task
 ## Description
  Test task was done with:
- * Docker, 
- * Laravel Framework v.5.6
- * PHPUnit 7.3.1 
- * is Connected with TravisCI.
+ * Docker;
+ * Laravel Framework v.5.6;
+ * PHPUnit 7.3.1;
+ * Connected with TravisCI.
  
  Application is an API service with functionality that was required in test task.
 
@@ -32,5 +32,5 @@ To start a project you need docker and docker-compose installed.
 ```
 - docker-compose up -d
 ```
-you are ready to go
+you are ready to go!
 
