@@ -18,3 +18,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('device','DeviceController@index');
+Route::put('device','DeviceController@store');

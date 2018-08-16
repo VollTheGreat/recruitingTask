@@ -5,8 +5,9 @@ namespace  App\Http\Controllers;
 use App\Domain\Device\Exceptions\DeviceCreationFailed;
 use App\Domain\Device\Repositories\DeviceRepository;
 use App\Domain\Device\Repositories\TypeRepository;
+use App\Domain\Device\Requests\DeviceStoreRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
+use Illuminate\Http\Request;
 
 class DeviceController extends Controller
 {
@@ -50,7 +51,7 @@ class DeviceController extends Controller
     /**
      * PUT /api/device
      *
-     * @param \App\Domain\Device\Controllers\DeviceStoreRequest $deviceStoreRequest
+     * @param \App\Domain\Device\Requests\DeviceStoreRequest $deviceStoreRequest
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -59,6 +60,9 @@ class DeviceController extends Controller
         try {
             $this->deviceRepository->create($deviceStoreRequest->all());
         } catch (DeviceCreationFailed $exception) {
+            if(env('APP_ENV') == 'testing'){
+                dd($exception);
+            }
             return response()->json([
                 'status' => 'error',
                 'message' => 'Error occurred while saving new device',
@@ -68,6 +72,6 @@ class DeviceController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'device created successfully',
-        ]);
+        ],200);
     }
 }

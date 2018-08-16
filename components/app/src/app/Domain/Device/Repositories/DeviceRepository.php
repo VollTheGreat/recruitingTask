@@ -43,11 +43,12 @@ class DeviceRepository implements DeviceRepositoryInterface
             $device = new Device();
             $device->fill($allPostData);
             $device->save();
-            $device->type()->update($allPostData['type']);
             DB::commit();
-        }catch (\Throwable $exception){
+        }catch (\Exception $exception){
             DB::rollBack();
-            throw new DeviceCreationFailed('Device creation failed',$exception->getCode(),$exception->getTrace());
+            throw new DeviceCreationFailed(
+                'Device creation failed',
+                $exception->getCode());
         }
 
         return $device;
